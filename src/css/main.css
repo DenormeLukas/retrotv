@@ -2,6 +2,34 @@
 
     margin: 0;
     padding: 0;
+    cursor: none;
+
+}
+
+h1 {
+
+    position: absolute;
+    text-align: center;
+    width: 100vw;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 100;
+    margin-top: 5rem;
+    font-size: 2rem;
+    z-index: 1;
+
+}
+
+.cursor {
+
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: .1s ease;
+  position: absolute;
+  z-index: 2;
 
 }
 
