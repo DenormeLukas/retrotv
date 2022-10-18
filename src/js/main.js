@@ -106,38 +106,26 @@ import portalFragmentShader3 from '../shaders/portal/fragment3.glsl?raw';
     pointLight2.position.set(-10, 4, -1);
     scene.add(pointLight2);
 
-    const loadShaders = () => {
 
-        const loader2 = new GLTFLoader();
+    const loader2 = new GLTFLoader();
 
-        loader2.load(
-            // resource URL
-            'assets/scene.glb',
-            (gltf) => {
-                gltf.scene.traverse(child => {
+    loader2.load(
+        // resource URL
+        'assets/scene.glb',
+        (gltf) => {
+            gltf.scene.traverse(child => {
+                if (child.name === "Object_3") {
 
-                    if (child.name === "Object_3") {
-                        switch (filter) {
-                            case 1:
-                                child.material = materialShader;
-                                break;
-                            case 2:
-                                child.material = materialShader2;
-                                break;
-                            case 3:
-                                child.material = materialShader3;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                    child.material = materialShader;
 
-                })
-                scene.add(gltf.scene);
-            }
-        );
+                }
 
-    }
+            })
+            scene.add(gltf.scene);
+        }
+    );
+
+
 
     const clock = new THREE.Clock();
 
@@ -155,9 +143,11 @@ import portalFragmentShader3 from '../shaders/portal/fragment3.glsl?raw';
 
         console.log(intersects[0].object.name)
 
+
         if (intersects[0].object.name === "Object_16" || intersects[0].object.name === "Object_13") {
 
             filter = 1;
+
 
         } else if (intersects[0].object.name === "Object_8" || intersects[0].object.name === "Object_14") {
 
@@ -169,8 +159,26 @@ import portalFragmentShader3 from '../shaders/portal/fragment3.glsl?raw';
 
         }
 
+        scene.traverse(child => {
+            if (child.name === "Object_3") {
+                switch (filter) {
+                    case 1:
+                        child.material = materialShader;
+                        break;
+                    case 2:
+                        child.material = materialShader2;
+                        break;
+                    case 3:
+                        child.material = materialShader3;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+
         console.log(filter);
-        loadShaders();
 
 
     }
@@ -207,8 +215,6 @@ import portalFragmentShader3 from '../shaders/portal/fragment3.glsl?raw';
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     })
-
-    loadShaders();
     draw();
 
 }
