@@ -4,9 +4,14 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 
 import portalVertexShader from '../shaders/portal/vertex.glsl?raw';
-import portalFragmentShader from '../shaders/portal/fragment.glsl?raw';
+import portalFragmentShader from '../shaders/portal/fragment1.glsl?raw';
+import portalFragmentShader2 from '../shaders/portal/fragment2.glsl?raw';
+import portalFragmentShader3 from '../shaders/portal/fragment3.glsl?raw';
+
 
 {
+
+    let filter = 2;
 
     const canvas = document.querySelector('canvas.webgl');
     const scene = new THREE.Scene();
@@ -38,7 +43,7 @@ import portalFragmentShader from '../shaders/portal/fragment.glsl?raw';
 
     const uniforms = {
         iTime: { value: 0 },
-        iResolution: { value: new THREE.Vector3(10, 10, 10) },
+        iResolution: { value: new THREE.Vector3(10, 10, 0) },
     };
 
     const materialShader = new THREE.ShaderMaterial({
@@ -48,6 +53,29 @@ import portalFragmentShader from '../shaders/portal/fragment.glsl?raw';
         uniforms,
 
     });
+
+    const materialShader2 = new THREE.ShaderMaterial({
+
+        fragmentShader: portalFragmentShader2,
+        vertexShader: portalVertexShader,
+        uniforms: {
+            iTime: { value: 0 },
+            iResolution: { value: new THREE.Vector3(2, 2, 0) },
+        }
+
+    });
+
+    const materialShader3 = new THREE.ShaderMaterial({
+
+        fragmentShader: portalFragmentShader3,
+        vertexShader: portalVertexShader,
+        uniforms: {
+            iTime: { value: 0 },
+            iResolution: { value: new THREE.Vector3(25, 25, 0) },
+        }
+
+    });
+
 
 
     //LIGHTS
@@ -76,7 +104,19 @@ import portalFragmentShader from '../shaders/portal/fragment.glsl?raw';
             gltf.scene.traverse(child => {
 
                 if (child.name === "Object_3") {
-                    child.material = materialShader;
+                    switch (filter) {
+                        case 1:
+                            child.material = materialShader;
+                            break;
+                        case 2:
+                            child.material = materialShader2;
+                            break;
+                        case 3:
+                            child.material = materialShader3;
+                            break;
+                        default:
+                            break;
+                    }
                 }
 
             })
@@ -90,6 +130,8 @@ import portalFragmentShader from '../shaders/portal/fragment.glsl?raw';
 
         const elapsedTime = clock.getElapsedTime();
         materialShader.uniforms.iTime.value = elapsedTime;
+        materialShader2.uniforms.iTime.value = elapsedTime;
+        materialShader3.uniforms.iTime.value = elapsedTime;
 
         renderer.render(scene, camera);
         window.requestAnimationFrame(draw);

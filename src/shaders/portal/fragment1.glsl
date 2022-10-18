@@ -2,8 +2,6 @@
 
     uniform vec3 iResolution;
     uniform float iTime;
-    uniform vec4 iMouse; 
-    uniform sampler2D iChannel0;
 
 //  Let's make some TV Noise
 
